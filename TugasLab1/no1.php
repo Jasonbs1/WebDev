@@ -1,3 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Palindrome Multiplication Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 20px;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        input[type="number"] {
+            padding: 10px;
+            width: 50px;
+            text-align: center;
+        }
+        input[type="submit"] {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #218838;
+        }
+        table {
+            margin: 20px auto;
+            border-collapse: collapse;
+            width: 60%;
+        }
+        td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Palindrome Multiplication Generator</h1>
+<form method="post" action="">
+    <label for="iterations">Enter number of palindromes (1-50):</label>
+    <input type="number" id="iterations" name="iterations" min="1" max="50" required>
+    <input type="submit" value="Generate">
+</form>
+
 <?php
 
 // Constants for input validation
@@ -10,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['iterations'])) {
     // Retrieve and sanitize user input
     $iterations = (int) $_POST['iterations'];
     
-    // Validate that input is within range and an odd number
+    // Validate that input is within range
     if ($iterations >= MIN_LIMIT && $iterations <= MAX_LIMIT) {
         // Generate and display palindromes
         echo displayPalindromeResults($iterations);
@@ -79,3 +131,6 @@ function generateErrorMessage($input) {
 }
 
 ?>
+
+</body>
+</html>
