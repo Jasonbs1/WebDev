@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Palindrome Multiplication Generator</title>
+    <title>Palindrome Generator</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -29,21 +29,20 @@
         input[type="submit"]:hover {
             background-color: #218838;
         }
-        table {
+        .result {
             margin: 20px auto;
-            border-collapse: collapse;
-            width: 60%;
+            width: 80%;
+            text-align: center; /* Center the results */
         }
-        td {
-            padding: 10px;
-            border: 1px solid #ddd;
-            text-align: center;
+        .row {
+            display: block;
+            margin: 5px auto; /* Space between rows */
         }
     </style>
 </head>
 <body>
 
-<h1>Palindrome Multiplication Generator</h1>
+<h1>Palindrome Generator</h1>
 <form method="post" action="">
     <label for="iterations">Enter number of palindromes (1-50):</label>
     <input type="number" id="iterations" name="iterations" min="1" max="50" required>
@@ -73,20 +72,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['iterations'])) {
 }
 
 /**
- * Generate a string of palindromes using mathematical approach.
- * Example: 1, 11, 111, 1111 and then squares them.
+ * Generate a string of palindromes.
  *
  * @param int $count Number of palindromes to generate.
  * @return string Formatted HTML output.
  */
 function displayPalindromeResults($count) {
-    $output = "<div style='text-align: center;'>"; // Store results with a wrapper
+    $output = "<div class='result'>"; // Store results with a wrapper
 
     // Generate and display the palindromes
     for ($i = 1; $i <= $count; $i++) {
         $palindromeNumber = getPalindrome($i);
-        $squareResult = pow($palindromeNumber, 2);
-        $output .= formatResult($palindromeNumber, $squareResult);
+        $output .= formatResult($palindromeNumber, $i); // Pass the row number for formatting
     }
     
     $output .= "</div>"; // Close the wrapper
@@ -94,30 +91,36 @@ function displayPalindromeResults($count) {
 }
 
 /**
- * Generate palindrome using mathematical properties (instead of string manipulation).
- * This can be done using powers of 10 and summing up the numbers.
+ * Generate palindrome by constructing a symmetrical number.
  *
  * @param int $length Length of the palindrome number.
- * @return int The palindrome number.
+ * @return string The palindrome number.
  */
 function getPalindrome($length) {
-    $palindrome = 0;
-    for ($j = 0; $j < $length; $j++) {
-        $palindrome += pow(10, $j); // Adds 1, 10, 100... to form 1, 11, 111...
+    $num = ""; // Initialize an empty string for the number
+    // Create the first half of the palindrome
+    for ($j = 1; $j <= $length; $j++) {
+        $num .= $j; // Append numbers 1 to length
     }
-    return $palindrome;
+    // Create the second half of the palindrome by reversing the first half
+    $palindrome = $num . strrev(substr($num, 0, -1)); // Exclude the last digit for symmetry
+    return $palindrome; // Return the generated palindrome
 }
 
 /**
- * Format the result to display in the desired format.
+ * Format the result to display.
  *
- * @param int $palindrome Palindrome number generated.
- * @param int $result The square of the palindrome.
+ * @param string $palindrome Palindrome number generated.
+ * @param int $row The current row number.
  * @return string HTML formatted result.
  */
-function formatResult($palindrome, $result) {
-    // Displaying the result as a table row instead of centered paragraph
-    return "<table align='center' border='1'><tr><td>{$palindrome} x {$palindrome}</td><td>{$result}</td></tr></table>";
+function formatResult($palindrome, $row) {
+    // Calculate left margin to center the triangle
+    $maxWidth = 50; // Adjust based on desired maximum width
+    $marginLeft = ($maxWidth - ($row * 2)) . "px"; // Adjust the left margin dynamically
+    
+    // Create a row for the current palindrome with calculated margin
+    return "<div class='row' style='margin-left: $marginLeft;'>" . $palindrome . "</div>";
 }
 
 /**
