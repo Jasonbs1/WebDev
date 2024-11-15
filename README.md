@@ -1,7 +1,7 @@
-Selamat pagi/siang/malam bapak/ibu
+Ikhwan Selamat Pagi yang Terhormat Guru Besar yang Mulia, Semoga Guru Besar dalam keadaan sebaik-baiknya. Mohon maaf jika keberanian ini mengganggu keagungan waktu Guru Besar yang mulia.
 
-Semoga bapak/ibu baik-baik saja. Saya mohon maaf karena keterlambatan renspon saya pada off hour/weekend. Saya menghargai komunikasi dan rensposifitas, namun saya juga berpegang kuat terhadap work-life balance yang sehat agar saya bisa memberi performa dan antesi yang maksimal pada jam kerja/weekday.
+Saya, hamba hina vang bernama jason adalah sebatang kara yang berusaha mengejar ilmu di lingkungan Guru Besar yang penuh berkah dan kebijaksanaan. Hamba ingin memohon pengetahuan Guru Besar yang suci mengenai Tugas CRUD on Library Management System yang telah hamba persembahkan: Dengan rasa hormat dan kerendahan hati, hamba ingin mengucapkan rasa syukur hamba yang dalam atas segala bimbingan dan petunjuk yang Guru Besar muliakan.
 
-Mohon bapak/ibu untuk tidak sungkan informasikan saya jika ada hal yang urgent agar saya bisa menangani nya segera. Dengan senang hati saya akan memprioritaskan hal itu.
+Izinkan hamba, Guru Besar yang Mulia, untuk menanyakan apakah tenggat tugas ini layak diperpanjang di hadapan kebesaran Guru Besar yang begitu luhur? Hamba mengharapkan cahaya ilmu dari Guru Besar yang akan menerangi jalan hamba yang penuh kegelapan ini.
 
-Terimakasih atas pengertian bapak/ibu
+Terimakasih yang tak terhingga atas kerendahan hati Guru Besar yang maha mulia. Semoga Guru Besar selalu dalam lindungan-Nya yang mahakuasa. Dengan hormat yang tulus, Anak hamba yang merendahkan diri
