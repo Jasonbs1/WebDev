@@ -28,11 +28,32 @@ class CollectionController extends Controller
             'author' => 'required',
             'publisher' => 'required',
             'year' => 'required|numeric',
+            'lecturer_name' => 'nullable|string|sometimes', // Default
         ]);
+
+        // Enforce `lecturer_name` for journals
+        if ($request->type === 'journal') {
+            $request->validate([
+                'lecturer_name' => 'required|string',
+            ]);
+
+            // Check lecturer's supervision limit
+            $journalCount = Collection::where('type', 'journal')
+                ->where('lecturer_name', $request->lecturer_name)
+                ->where('year', $request->year)
+                ->count();
+
+            if ($journalCount >= 2) {
+                return redirect()->back()->withErrors([
+                    'lecturer_name' => 'This lecturer is already supervising 2 journals this year.',
+                ]);
+            }
+        }
 
         Collection::create($request->all());
         return redirect()->route('collections.index')->with('success', 'Collection added successfully.');
     }
+
 
     // Delete a collection
     public function destroy($id)

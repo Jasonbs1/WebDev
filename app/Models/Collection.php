@@ -16,8 +16,10 @@ class Collection extends Model
         'publisher',
         'year',
         'description',
-        'is_available'
+        'is_available',
+        'lecturer_name', // New field
     ];
+
 
     // Collection can have multiple reservations
     public function reservations()
