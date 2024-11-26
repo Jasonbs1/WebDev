@@ -3,7 +3,7 @@
 @section('content')
     <h1>Add New Collection</h1>
 
-    <form action="{{ route('collections.store') }}" method="POST">
+    <form action="{{ route('librarian.store') }}" method="POST">
         @csrf
         <div class="form-group">
             <label for="title">Title</label>
@@ -12,7 +12,6 @@
         <div class="form-group">
             <label for="type">Type</label>
             <select name="type" id="type" class="form-control" onchange="toggleLecturerNameField(this.value)" required>
-                <option value="">Select type</option>
                 <option value="book">Book</option>
                 <option value="journal">Journal</option>
                 <option value="ebook">E-Book</option>

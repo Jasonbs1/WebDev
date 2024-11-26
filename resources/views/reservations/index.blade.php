@@ -1,35 +1,48 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Reservations</h1>
-    <table class="table mt-3">
+    <h1>Reservation List</h1>
+    <table class="table">
         <thead>
             <tr>
-                <th>Student Name</th>
-                <th>Book Title</th>
-                <th>Reservation Date</th>
+                <th>Item</th>
+                <th>User</th>
+                <th>Duration</th>
                 <th>Status</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($reservations as $reservation)
+            @foreach($reservations as $reservation)
                 <tr>
-                    <td>{{ $reservation->student_name }}</td>
-                    <td>{{ $reservation->book_title }}</td>
-                    <td>{{ $reservation->reservation_date }}</td>
-                    <td>{{ $reservation->status }}</td>
+                    <td>{{ $reservation->item->title }}</td>
+                    <td>{{ $reservation->user->name }}</td>
+                    <td>{{ $reservation->borrow_duration }} days</td>
                     <td>
-                        <form action="{{ route('reservations.update', $reservation->id) }}" method="POST" style="display:inline;">
-                            @csrf
-                            @method('PUT')
-                            <button type="submit" class="btn btn-success">Approve</button>
-                        </form>
-                        <form action="{{ route('reservations.destroy', $reservation->id) }}" method="POST" style="display:inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger">Reject</button>
-                        </form>
+                        <span class="badge
+                            @if($reservation->status == 'approved')
+                                badge-success
+                            @elseif($reservation->status == 'rejected')
+                                badge-danger
+                            @else
+                                badge-warning
+                            @endif">
+                            {{ ucfirst($reservation->status) }}
+                        </span>
+                    </td>
+                    <td>
+                        @if($reservation->status == 'pending')
+                            <form action="{{ route('reservations.update', $reservation->id) }}" method="POST" class="d-inline">
+                                @csrf
+                                @method('PUT')
+                                <button type="submit" name="status" value="approved" class="btn btn-success btn-sm">Approve</button>
+                            </form>
+                            <form action="{{ route('reservations.update', $reservation->id) }}" method="POST" class="d-inline">
+                                @csrf
+                                @method('PUT')
+                                <button type="submit" name="status" value="rejected" class="btn btn-danger btn-sm">Reject</button>
+                            </form>
+                        @endif
                     </td>
                 </tr>
             @endforeach

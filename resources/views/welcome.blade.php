@@ -58,29 +58,6 @@
                         @endif
                     </header>
 
-
-
-                    @section('content')
-    <div class="text-center mt-5">
-        <h1>Welcome to the Library Management System</h1>
-        <p>Manage your library's resources efficiently with our automated system.</p>
-
-        <div class="mt-4">
-            <!-- Admin Dashboard Button -->
-            <a href="{{ route('admin.index') }}" class="btn btn-primary btn-lg mr-3">Admin Dashboard</a>
-
-            <!-- Librarian Dashboard Button -->
-            <a href="{{ route('librarian.index') }}" class="btn btn-secondary btn-lg mr-3">Librarian Dashboard</a>
-
-            <!-- Reservations Button -->
-            <a href="{{ route('reservations.index') }}" class="btn btn-info btn-lg mr-3">Manage Reservations</a>
-
-            <!-- Library Collection Button -->
-            <a href="{{ route('collections.index') }}" class="btn btn-warning btn-lg">Library Collection</a>
-        </div>
-    </div>
-@endsection
-
                     <main class="mt-6">
                         <div class="grid gap-6 lg:grid-cols-2 lg:gap-8">
                             <a

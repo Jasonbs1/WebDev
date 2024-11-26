@@ -33,6 +33,9 @@
                     <a href="{{ route('reservations.index') }}" class="list-group-item">Reservations</a>
                     <a href="{{ route('collections.index') }}" class="list-group-item">Library Collection</a>
                     <a href="{{ route('access_requests.index') }}" class="list-group-item">Access Requests</a>
+                    <!-- Student and Lecturer Buttons -->
+                    <a href="{{ route('students.index') }}" class="list-group-item">Student Reservations</a>
+                    <a href="{{ route('lecturers.index') }}" class="list-group-item">Lecturer Reservations</a>
                 </nav>
             </div>
             <div class="col-9">
