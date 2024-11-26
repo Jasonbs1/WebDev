@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 17 Nov 2024 pada 13.35
+-- Waktu pembuatan: 26 Nov 2024 pada 02.53
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.2.25
 
@@ -100,6 +100,7 @@ CREATE TABLE `collections` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `title` varchar(255) NOT NULL,
   `type` enum('book','journal','newspaper','cd','dvd','ebook') NOT NULL,
+  `lecturer_name` varchar(255) DEFAULT NULL,
   `author` varchar(255) DEFAULT NULL,
   `publisher` varchar(255) DEFAULT NULL,
   `year` int(11) DEFAULT NULL,
@@ -113,10 +114,11 @@ CREATE TABLE `collections` (
 -- Dumping data untuk tabel `collections`
 --
 
-INSERT INTO `collections` (`id`, `title`, `type`, `author`, `publisher`, `year`, `description`, `is_available`, `created_at`, `updated_at`) VALUES
-(1, 'Introduction to Algorithms', 'book', 'Thomas H. Cormen', 'MIT Press', 2009, 'A comprehensive book on algorithms.', 1, '2024-11-17 01:20:56', '2024-11-17 01:20:56'),
-(2, 'Nature Journal', 'journal', NULL, 'Springer Nature', 2021, NULL, 1, '2024-11-17 01:20:56', '2024-11-17 01:20:56'),
-(3, 'Kompas Newspaper', 'newspaper', NULL, 'Kompas', 2024, NULL, 1, '2024-11-17 01:20:56', '2024-11-17 01:20:56');
+INSERT INTO `collections` (`id`, `title`, `type`, `lecturer_name`, `author`, `publisher`, `year`, `description`, `is_available`, `created_at`, `updated_at`) VALUES
+(1, 'Introduction to Algorithms', 'book', NULL, 'Thomas H. Cormen', 'MIT Press', 2009, 'A comprehensive book on algorithms.', 1, '2024-11-17 01:20:56', '2024-11-17 01:20:56'),
+(2, 'Nature Journal', 'journal', NULL, NULL, 'Springer Nature', 2021, NULL, 1, '2024-11-17 01:20:56', '2024-11-17 01:20:56'),
+(3, 'Kompas Newspaper', 'newspaper', NULL, NULL, 'Kompas', 2024, NULL, 1, '2024-11-17 01:20:56', '2024-11-17 01:20:56'),
+(4, 'John Library\'s introduction to library management system', 'journal', 'John Library', 'John Library', 'John Library', 1882, NULL, 1, '2024-11-25 15:20:15', '2024-11-25 15:20:15');
 
 -- --------------------------------------------------------
 
@@ -172,6 +174,29 @@ CREATE TABLE `job_batches` (
 -- --------------------------------------------------------
 
 --
+-- Struktur dari tabel `lecturers`
+--
+
+CREATE TABLE `lecturers` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `lecturer_id` varchar(255) NOT NULL,
+  `department` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `lecturers`
+--
+
+INSERT INTO `lecturers` (`id`, `name`, `email`, `lecturer_id`, `department`, `created_at`, `updated_at`) VALUES
+(1, 'John Lecturer', 'JohnLecturere@email.com', '01', 'Computer Science', '2024-11-25 16:13:57', '2024-11-25 16:13:57');
+
+-- --------------------------------------------------------
+
+--
 -- Struktur dari tabel `librarians`
 --
 
@@ -218,7 +243,11 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (20, '2024_11_17_085601_create_reservations_table', 1),
 (21, '2024_11_17_090519_create_admins_table', 1),
 (22, '2024_11_17_090725_create_access_requests_table', 1),
-(23, '2024_11_17_090801_create_reminders_table', 1);
+(23, '2024_11_17_090801_create_reminders_table', 1),
+(24, '2024_11_25_225903_add_lecturer_name_to_collections_table', 2),
+(25, '2024_11_25_232912_create_students_table', 3),
+(26, '2024_11_25_232956_create_lecturers_table', 3),
+(27, '2024_11_26_014021_add_lecturer_id_to_reservations_table', 4);
 
 -- --------------------------------------------------------
 
@@ -268,15 +297,16 @@ CREATE TABLE `reservations` (
   `due_date` date DEFAULT NULL,
   `is_overdue` tinyint(1) NOT NULL DEFAULT 0,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `lecturer_id` bigint(20) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data untuk tabel `reservations`
 --
 
-INSERT INTO `reservations` (`id`, `collection_id`, `student_id`, `reserved_at`, `due_date`, `is_overdue`, `created_at`, `updated_at`) VALUES
-(1, 1, 101, '2024-11-17', '2024-12-01', 0, '2024-11-17 01:20:56', '2024-11-17 01:20:56');
+INSERT INTO `reservations` (`id`, `collection_id`, `student_id`, `reserved_at`, `due_date`, `is_overdue`, `created_at`, `updated_at`, `lecturer_id`) VALUES
+(1, 1, 101, '2024-11-17', '2024-12-01', 0, '2024-11-17 01:20:56', '2024-11-17 01:20:56', NULL);
 
 -- --------------------------------------------------------
 
@@ -298,7 +328,30 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('FmvazgqsEbLRnfzp4sxgTvZtg3uX3Ni22umwDiWA', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiem9Db0VqR3d1ZnNQT3FiVFNtZXVHakh3SFpKSDUyWDY4eUdFMUZRMyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9saWJyYXJpYW4iO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX19', 1731846890);
+('XGmiLydyEiUKdnLtgexMlPtxOFCWpxUU3TlYS3q9', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiNVZiSERuTjczZ1d5Smw4SkNBSTVkSEtydjFRM01hS1k3NGZMRmlYaSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9sZWN0dXJlcnMiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX19', 1732585825);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `students`
+--
+
+CREATE TABLE `students` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `student_id` varchar(255) NOT NULL,
+  `program` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `students`
+--
+
+INSERT INTO `students` (`id`, `name`, `email`, `student_id`, `program`, `created_at`, `updated_at`) VALUES
+(1, 'John Student', 'John@email.com', '01', 'Computer Science', '2024-11-25 16:12:29', '2024-11-25 16:12:29');
 
 -- --------------------------------------------------------
 
@@ -375,6 +428,14 @@ ALTER TABLE `job_batches`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indeks untuk tabel `lecturers`
+--
+ALTER TABLE `lecturers`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `lecturers_email_unique` (`email`),
+  ADD UNIQUE KEY `lecturers_lecturer_id_unique` (`lecturer_id`);
+
+--
 -- Indeks untuk tabel `librarians`
 --
 ALTER TABLE `librarians`
@@ -405,7 +466,8 @@ ALTER TABLE `reminders`
 --
 ALTER TABLE `reservations`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `reservations_collection_id_foreign` (`collection_id`);
+  ADD KEY `reservations_collection_id_foreign` (`collection_id`),
+  ADD KEY `reservations_lecturer_id_foreign` (`lecturer_id`);
 
 --
 -- Indeks untuk tabel `sessions`
@@ -414,6 +476,14 @@ ALTER TABLE `sessions`
   ADD PRIMARY KEY (`id`),
   ADD KEY `sessions_user_id_index` (`user_id`),
   ADD KEY `sessions_last_activity_index` (`last_activity`);
+
+--
+-- Indeks untuk tabel `students`
+--
+ALTER TABLE `students`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `students_email_unique` (`email`),
+  ADD UNIQUE KEY `students_student_id_unique` (`student_id`);
 
 --
 -- Indeks untuk tabel `users`
@@ -442,7 +512,7 @@ ALTER TABLE `admins`
 -- AUTO_INCREMENT untuk tabel `collections`
 --
 ALTER TABLE `collections`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT untuk tabel `failed_jobs`
@@ -457,6 +527,12 @@ ALTER TABLE `jobs`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT untuk tabel `lecturers`
+--
+ALTER TABLE `lecturers`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT untuk tabel `librarians`
 --
 ALTER TABLE `librarians`
@@ -466,7 +542,7 @@ ALTER TABLE `librarians`
 -- AUTO_INCREMENT untuk tabel `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT untuk tabel `reminders`
@@ -478,6 +554,12 @@ ALTER TABLE `reminders`
 -- AUTO_INCREMENT untuk tabel `reservations`
 --
 ALTER TABLE `reservations`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT untuk tabel `students`
+--
+ALTER TABLE `students`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
@@ -507,7 +589,8 @@ ALTER TABLE `reminders`
 -- Ketidakleluasaan untuk tabel `reservations`
 --
 ALTER TABLE `reservations`
-  ADD CONSTRAINT `reservations_collection_id_foreign` FOREIGN KEY (`collection_id`) REFERENCES `collections` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `reservations_collection_id_foreign` FOREIGN KEY (`collection_id`) REFERENCES `collections` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `reservations_lecturer_id_foreign` FOREIGN KEY (`lecturer_id`) REFERENCES `lecturers` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
